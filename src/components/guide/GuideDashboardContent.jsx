@@ -109,8 +109,28 @@ const ApplicationModal = ({ application, onClose }) => {
                         <button 
                             onClick={(e) => {
                                 e.stopPropagation();
-                                const documentUrl = getUploadUrl(`uploads/${application.documentPath}`);
-                                window.open(documentUrl, '_blank');
+                                const documentUrl = getUploadUrl(application.documentPath);
+                                
+                                // If it's a base64 data URL, create a blob and open it
+                                if (documentUrl.startsWith('data:')) {
+                                    // Extract base64 data
+                                    const base64Data = documentUrl.split(',')[1];
+                                    const mimeType = documentUrl.split(',')[0].split(':')[1].split(';')[0];
+                                    const byteCharacters = atob(base64Data);
+                                    const byteNumbers = new Array(byteCharacters.length);
+                                    for (let i = 0; i < byteCharacters.length; i++) {
+                                        byteNumbers[i] = byteCharacters.charCodeAt(i);
+                                    }
+                                    const byteArray = new Uint8Array(byteNumbers);
+                                    const blob = new Blob([byteArray], { type: mimeType });
+                                    const url = URL.createObjectURL(blob);
+                                    window.open(url, '_blank');
+                                    // Clean up the URL after a delay
+                                    setTimeout(() => URL.revokeObjectURL(url), 100);
+                                } else {
+                                    // Legacy file path
+                                    window.open(documentUrl, '_blank');
+                                }
                             }}
                             className="text-sm font-semibold text-blue-600 hover:underline cursor-pointer"
                         >

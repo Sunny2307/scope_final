@@ -64,9 +64,16 @@ export const API_ENDPOINTS = {
 };
 
 // Helper to get upload URL for documents
+// Now handles both file paths (legacy) and base64 data URLs (Vercel-compatible)
 export const getUploadUrl = (documentPath) => {
   if (!documentPath) return null;
-  // Remove leading slash if present
+  
+  // Check if it's a base64 data URL (starts with "data:")
+  if (documentPath.startsWith('data:')) {
+    return documentPath; // Return as-is for base64 data URLs
+  }
+  
+  // Legacy file path handling
   const cleanPath = documentPath.startsWith('/') ? documentPath.slice(1) : documentPath;
   return `${API_BASE_URL}/${cleanPath}`;
 };
