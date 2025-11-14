@@ -50,11 +50,8 @@ const ExcelUploadContent = () => {
                 throw new Error('No authentication token found');
             }
 
-            const response = await axiosInstance.post(API_ENDPOINTS.EXCEL_UPLOAD, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
+            // Don't set Content-Type header - let browser set it automatically with boundary for FormData
+            const response = await axiosInstance.post(API_ENDPOINTS.EXCEL_UPLOAD, formData);
 
             setResults(response.data);
             setFile(null);

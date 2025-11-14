@@ -178,14 +178,10 @@ const InfoIcon = () => (
 
             console.log('Submitting Leave Request:', { leaveType, startDate, endDate, reason, hasDocument: files.length > 0 });
 
+            // Don't set Content-Type header - let browser set it automatically with boundary for FormData
             const response = await axiosInstance.post(
                 API_ENDPOINTS.STUDENT_SUBMIT_LEAVE,
-                formData,
-                {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                }
+                formData
             );
 
             console.log('Leave application submitted successfully:', response.data);

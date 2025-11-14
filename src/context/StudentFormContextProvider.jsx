@@ -100,11 +100,8 @@ export default function StudentFormContextProvider({ children, userEmail: propUs
             const formData = new FormData();
             formData.append('profilePhoto', file);
             
-            const response = await axiosInstance.post(API_ENDPOINTS.STUDENT_UPLOAD_PHOTO, formData, {
-                headers: { 
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
+            // Don't set Content-Type header - let browser set it automatically with boundary for FormData
+            const response = await axiosInstance.post(API_ENDPOINTS.STUDENT_UPLOAD_PHOTO, formData);
             
             // Update form data with photo URL (base64 data URL)
             setFormData(prev => ({
