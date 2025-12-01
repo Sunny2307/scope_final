@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StudentFormContext } from './StudentFormContext';
-import axiosInstance from '../utils/axiosInstance';
-import { API_ENDPOINTS } from '../config/api';
+import axios from 'axios';
 
 
 /**
@@ -14,7 +13,7 @@ export default function StudentFormContextProvider({ children, userEmail: propUs
         studentId: '', // Removed automatic extraction, now user-entered (mapped to ugcId)
         employeeId: '', // Added: Employee ID field
         studentName: '',
-        institute: 'CSPIT',
+        institute: 'PDPIAS',
         admissionDate: '',
         registrationDate: '',
         admissionYear: '',
@@ -60,7 +59,9 @@ export default function StudentFormContextProvider({ children, userEmail: propUs
             const token = new URLSearchParams(window.location.search).get('token');
             if (!userEmail && token) {
                 try {
-                    const response = await axiosInstance.get(API_ENDPOINTS.VERIFY_TOKEN);
+                    const response = await axios.get('http://localhost:3000/api/auth/verify-token', {
+                        headers: { Authorization: `Bearer ${token} `},
+                    });
                     const email = response.data.email;
                     setUserEmail(email);
                     
@@ -100,8 +101,12 @@ export default function StudentFormContextProvider({ children, userEmail: propUs
             const formData = new FormData();
             formData.append('profilePhoto', file);
             
-            // Don't set Content-Type header - let browser set it automatically with boundary for FormData
-            const response = await axiosInstance.post(API_ENDPOINTS.STUDENT_UPLOAD_PHOTO, formData);
+            const response = await axios.post('http://localhost:3000/api/auth/student/uploadProfilePhoto', formData, {
+                headers: { 
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
             
             // Update form data with photo URL (base64 data URL)
             setFormData(prev => ({
@@ -217,7 +222,9 @@ export default function StudentFormContextProvider({ children, userEmail: propUs
                     scholarshipType: formData.scholarshipType,
                     ugcId: formData.studentId,
                 };
-                const response = await axiosInstance.post(API_ENDPOINTS.STUDENT_SAVE_PROFILE, submitData);
+                const response = await axios.post('http://localhost:3000/api/auth/student/saveStudentProfile', submitData, {
+                    headers: { Authorization: `Bearer ${token} `}
+                });
                 setMessage(response.data.message);
                 setIsSubmitted(true);
             } catch (error) {
