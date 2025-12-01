@@ -3,8 +3,7 @@ import { StudentContext } from '../../context/StudentContext';
 import DashboardHeader from '../layout/DashboardHeader';
 import DashboardFooter from '../layout/DashboardFooter';
 import Sidebar from '../layout/Sidebar';
-import axiosInstance from '../../utils/axiosInstance';
-import { API_ENDPOINTS } from '../../config/api';
+import axios from 'axios';
 
 export default function DashboardContent({ onApplyLeaveClick }) {
     const { user } = useContext(StudentContext);
@@ -58,8 +57,12 @@ export default function DashboardContent({ onApplyLeaveClick }) {
         
         // Fetch both APIs in parallel for faster loading
         Promise.all([
-            axiosInstance.get(API_ENDPOINTS.STUDENT_LEAVE_SUMMARY),
-            axiosInstance.get(API_ENDPOINTS.STUDENT_SCHOLARSHIPS)
+            axios.get('http://localhost:3000/api/auth/student/leave-summary', {
+                headers: { Authorization: `Bearer ${token}` },
+            }),
+            axios.get('http://localhost:3000/api/auth/student/scholarships', {
+                headers: { Authorization: `Bearer ${token}` },
+            })
         ])
         .then(([leaveResponse, scholarshipResponse]) => {
             setLeaveData(leaveResponse.data);
@@ -123,11 +126,12 @@ export default function DashboardContent({ onApplyLeaveClick }) {
                         <div>
                             <h2 className="text-2xl font-bold text-gray-500 tracking-tight">Welcome, {user?.name || 'Student'}{user?.studentId ? ` - ${user.studentId}` : ''}</h2>
                         </div>
-                        <div className="flex gap-2">
+                        <div className="flex gap-2 items-start">
                             <span className="bg-white border border-gray-200 text-gray-800 rounded-xl px-4 py-2 text-base font-semibold whitespace-nowrap">Dept: {user?.department || '...'}</span>
-                            <span className="bg-white border border-gray-200 text-gray-800 rounded-xl px-4 py-2 text-base font-semibold whitespace-nowrap">Guide: {user?.guide || '...'}</span>
-                            {/* --- Added Co-Guide Display --- */}
-                            <span className="bg-white border border-gray-200 text-gray-800 rounded-xl px-4 py-2 text-base font-semibold whitespace-nowrap">Co-Guide: {user?.coGuide || '...'}</span>
+                            <div className="bg-white border border-gray-200 text-gray-800 rounded-xl px-4 py-2 text-base font-semibold flex flex-col gap-1">
+                                <span className="whitespace-nowrap">Guide: {user?.guide || '...'}</span>
+                                <span className="whitespace-nowrap">Co-Guide: {user?.coGuide || '...'}</span>
+                            </div>
                         </div>
                     </div>
                     <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 items-stretch">
