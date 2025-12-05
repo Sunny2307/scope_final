@@ -1,15 +1,8 @@
-import { useState, useEffect } from 'react';import axiosInstance from '../utils/axiosInstance';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axiosInstance from '../utils/axiosInstance';
 import { API_ENDPOINTS } from '../config/api';
-
-import { useNavigate } from 'react-router-dom';import axiosInstance from '../utils/axiosInstance';
-import { API_ENDPOINTS } from '../config/api';
-
-import axios from 'axios';import axiosInstance from '../utils/axiosInstance';
-import { API_ENDPOINTS } from '../config/api';
-
 import { GuideContext } from './GuideContext';
-import axiosInstance from '../utils/axiosInstance';
-import { API_ENDPOINTS } from '../config/api';
 
 export default function GuideContextProvider({ children }) {
   const navigate = useNavigate();
