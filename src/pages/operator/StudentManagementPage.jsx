@@ -1,12 +1,8 @@
-import React, { useState, useEffect } from 'react';import axiosInstance from '../utils/axiosInstance';
-import { API_ENDPOINTS } from '../config/api';
-
-import { FiUser, FiToggleLeft, FiToggleRight, FiEye } from 'react-icons/fi';import axiosInstance from '../utils/axiosInstance';
-
-import axios from 'axios';import axiosInstance from '../utils/axiosInstance';
-
+import React, { useState, useEffect } from 'react';
+import axiosInstance from '../../utils/axiosInstance';
+import { API_ENDPOINTS } from '../../config/api';
+import { FiUser, FiToggleLeft, FiToggleRight, FiEye } from 'react-icons/fi';
 import StudentProfileReviewModal from '../../components/operator/StudentProfileReviewModal.jsx';
-import axiosInstance from '../utils/axiosInstance';
 
 const StudentManagementPage = () => {
   const [students, setStudents] = useState([]);
