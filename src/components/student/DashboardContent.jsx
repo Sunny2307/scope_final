@@ -1,21 +1,10 @@
-import React, { useState, useContext, useEffect } from 'react';import axiosInstance from '../utils/axiosInstance';
-import { API_ENDPOINTS } from '../config/api';
-
-import { StudentContext } from '../../context/StudentContext';import axiosInstance from '../utils/axiosInstance';
-import { API_ENDPOINTS } from '../config/api';
-
-import DashboardHeader from '../layout/DashboardHeader';import axiosInstance from '../utils/axiosInstance';
-import { API_ENDPOINTS } from '../config/api';
-
-import DashboardFooter from '../layout/DashboardFooter';import axiosInstance from '../utils/axiosInstance';
-import { API_ENDPOINTS } from '../config/api';
-
-import Sidebar from '../layout/Sidebar';import axiosInstance from '../utils/axiosInstance';
-import { API_ENDPOINTS } from '../config/api';
-
-import axios from 'axios';
-import axiosInstance from '../utils/axiosInstance';
-import { API_ENDPOINTS } from '../config/api';
+import React, { useState, useContext, useEffect } from 'react';
+import axiosInstance from '../../utils/axiosInstance';
+import { API_ENDPOINTS } from '../../config/api';
+import { StudentContext } from '../../context/StudentContext';
+import DashboardHeader from '../layout/DashboardHeader';
+import DashboardFooter from '../layout/DashboardFooter';
+import Sidebar from '../layout/Sidebar';
 
 export default function DashboardContent({ onApplyLeaveClick }) {
     const { user } = useContext(StudentContext);

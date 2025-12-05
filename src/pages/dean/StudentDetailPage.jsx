@@ -355,4 +355,3 @@ const StudentDetailPage = () => {
 };
 
 export default StudentDetailPage;
-

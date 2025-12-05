@@ -26,4 +26,3 @@ const DeanDashboard = () => {
 };
 
 export default DeanDashboard;
-

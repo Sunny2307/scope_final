@@ -73,4 +73,3 @@ const DeanSidebar = ({ isSidebarOpen, onSidebarToggle, activeItem }) => {
 };
 
 export default DeanSidebar;
-

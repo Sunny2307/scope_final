@@ -2,24 +2,18 @@ import React, { useState, useEffect } from 'react';import axiosInstance from '.
 import { API_ENDPOINTS } from '../config/api';
 
 import { FiDownload, FiCalendar, FiFileText } from 'react-icons/fi';import axiosInstance from '../utils/axiosInstance';
-import { API_ENDPOINTS } from '../config/api';
 
 import axios from 'axios';import axiosInstance from '../utils/axiosInstance';
-import { API_ENDPOINTS } from '../config/api';
 
 import jsPDF from 'jspdf';import axiosInstance from '../utils/axiosInstance';
-import { API_ENDPOINTS } from '../config/api';
 
 import 'jspdf-autotable';
 import DeanDashboardHeader from '../../components/dean/DeanDashboardHeader';import axiosInstance from '../utils/axiosInstance';
-import { API_ENDPOINTS } from '../config/api';
 
 import DeanSidebar from '../../components/dean/DeanSidebar';import axiosInstance from '../utils/axiosInstance';
-import { API_ENDPOINTS } from '../config/api';
 
 import DashboardFooter from '../../components/layout/DashboardFooter';
 import axiosInstance from '../utils/axiosInstance';
-import { API_ENDPOINTS } from '../config/api';
 
 const DeanReportGenerationPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -418,4 +412,3 @@ const DeanReportGenerationPage = () => {
 };
 
 export default DeanReportGenerationPage;
-

@@ -3,7 +3,6 @@ import { API_ENDPOINTS } from '../config/api';
 
 import axios from 'axios';
 import axiosInstance from '../utils/axiosInstance';
-import { API_ENDPOINTS } from '../config/api';
 
 const OperatorContext = createContext();
 

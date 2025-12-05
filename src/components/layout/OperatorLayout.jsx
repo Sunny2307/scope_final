@@ -2,20 +2,15 @@ import React, { useState, useEffect } from 'react';import axiosInstance from '.
 import { API_ENDPOINTS } from '../config/api';
 
 import { Outlet, useLocation, Navigate } from 'react-router-dom';import axiosInstance from '../utils/axiosInstance';
-import { API_ENDPOINTS } from '../config/api';
 
 import axios from 'axios';import axiosInstance from '../utils/axiosInstance';
-import { API_ENDPOINTS } from '../config/api';
 
 import OperatorDashboardHeader from './OperatorDashboardHeader';import axiosInstance from '../utils/axiosInstance';
-import { API_ENDPOINTS } from '../config/api';
 
 import OperatorSidebar from './OperatorSidebar';import axiosInstance from '../utils/axiosInstance';
-import { API_ENDPOINTS } from '../config/api';
 
 import DashboardFooter from './DashboardFooter';
 import axiosInstance from '../utils/axiosInstance';
-import { API_ENDPOINTS } from '../config/api';
 
 export default function OperatorLayout() {
     const [user, setUser] = useState(null);

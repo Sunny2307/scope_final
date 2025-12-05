@@ -198,5 +198,3 @@ const ResetPasswordModal = ({ isOpen, onClose }) => {
 };
 
 export default ResetPasswordModal;
-
-

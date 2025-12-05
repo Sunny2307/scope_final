@@ -77,4 +77,3 @@ export const getUploadUrl = (documentPath) => {
   const cleanPath = documentPath.startsWith('/') ? documentPath.slice(1) : documentPath;
   return `${API_BASE_URL}/${cleanPath}`;
 };
-

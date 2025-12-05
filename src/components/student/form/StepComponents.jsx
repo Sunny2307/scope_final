@@ -4,17 +4,13 @@ import { API_ENDPOINTS } from '../config/api';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import axios from 'axios';import axiosInstance from '../utils/axiosInstance';
-import { API_ENDPOINTS } from '../config/api';
 
 import { StudentFormContext } from '../../../context/StudentFormContext';import axiosInstance from '../utils/axiosInstance';
-import { API_ENDPOINTS } from '../config/api';
 
 import { User, Home, BookOpen, FileText, CheckCircle, UploadCloud, Calendar } from 'lucide-react';import axiosInstance from '../utils/axiosInstance';
-import { API_ENDPOINTS } from '../config/api';
 
 import { InputField, SelectField, TextareaField, RadioInput, CheckboxInput } from './FormControls';
 import axiosInstance from '../utils/axiosInstance';
-import { API_ENDPOINTS } from '../config/api';
 
 export const StepProgressBar = () => {
     const { currentStep } = useContext(StudentFormContext);

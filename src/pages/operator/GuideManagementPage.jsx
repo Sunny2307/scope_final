@@ -2,11 +2,9 @@ import React, { useState, useEffect } from 'react';import axiosInstance from '.
 import { API_ENDPOINTS } from '../config/api';
 
 import axios from 'axios';import axiosInstance from '../utils/axiosInstance';
-import { API_ENDPOINTS } from '../config/api';
 
 import { FiList, FiUserPlus, FiUsers, FiRefreshCw } from 'react-icons/fi';
 import axiosInstance from '../utils/axiosInstance';
-import { API_ENDPOINTS } from '../config/api';
 
 const GuideManagementPage = () => {
     const [activeTab, setActiveTab] = useState('guide-list');
