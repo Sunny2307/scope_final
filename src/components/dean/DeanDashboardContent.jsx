@@ -30,7 +30,7 @@ const DeanDashboardContent = () => {
                 throw new Error('No authentication token found');
             }
 
-            const response = await fetch('http://localhost:3000/api/dean/students', {
+            const response = await fetch(API_ENDPOINTS.DEAN_STUDENTS, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'

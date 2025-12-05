@@ -1,9 +1,21 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { StudentContext } from '../../context/StudentContext';
-import DashboardHeader from '../layout/DashboardHeader';
-import DashboardFooter from '../layout/DashboardFooter';
-import Sidebar from '../layout/Sidebar';
+import React, { useState, useContext, useEffect } from 'react';import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
+
+import { StudentContext } from '../../context/StudentContext';import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
+
+import DashboardHeader from '../layout/DashboardHeader';import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
+
+import DashboardFooter from '../layout/DashboardFooter';import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
+
+import Sidebar from '../layout/Sidebar';import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
+
 import axios from 'axios';
+import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
 
 export default function DashboardContent({ onApplyLeaveClick }) {
     const { user } = useContext(StudentContext);
@@ -57,10 +69,10 @@ export default function DashboardContent({ onApplyLeaveClick }) {
         
         // Fetch both APIs in parallel for faster loading
         Promise.all([
-            axios.get('http://localhost:3000/api/auth/student/leave-summary', {
+            axiosInstance.get(API_ENDPOINTS.STUDENT_LEAVE_SUMMARY, {
                 headers: { Authorization: `Bearer ${token}` },
             }),
-            axios.get('http://localhost:3000/api/auth/student/scholarships', {
+            axiosInstance.get(API_ENDPOINTS.STUDENT_SCHOLARSHIPS, {
                 headers: { Authorization: `Bearer ${token}` },
             })
         ])

@@ -1,8 +1,8 @@
 // API Configuration
 // This file centralizes all API endpoint configuration
 
-// Get API URL from environment variable, fallback to localhost for development
-export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
+// Get API URL from environment variable, fallback to production backend
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://scope-backend.vercel.app';
 
 // Helper function to get full API URL
 export const getApiUrl = (endpoint) => {

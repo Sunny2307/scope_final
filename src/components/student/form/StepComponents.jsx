@@ -1,10 +1,20 @@
 import React, { useContext, useState, useRef, useEffect } from 'react'; // Import useRef and useEffect
-import DatePicker from 'react-datepicker';
+import DatePicker from 'react-datepicker';import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
+
 import 'react-datepicker/dist/react-datepicker.css';
-import axios from 'axios';
-import { StudentFormContext } from '../../../context/StudentFormContext';
-import { User, Home, BookOpen, FileText, CheckCircle, UploadCloud, Calendar } from 'lucide-react';
+import axios from 'axios';import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
+
+import { StudentFormContext } from '../../../context/StudentFormContext';import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
+
+import { User, Home, BookOpen, FileText, CheckCircle, UploadCloud, Calendar } from 'lucide-react';import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
+
 import { InputField, SelectField, TextareaField, RadioInput, CheckboxInput } from './FormControls';
+import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
 
 export const StepProgressBar = () => {
     const { currentStep } = useContext(StudentFormContext);
@@ -274,7 +284,7 @@ export const AcademicInfo = () => {
     useEffect(() => {
         const fetchGuides = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/api/auth/available-guides');
+                const response = await axiosInstance.get(API_ENDPOINTS.AVAILABLE_GUIDES);
                 setGuides(response.data.guides || []);
             } catch (error) {
                 console.error('Error fetching guides:', error);

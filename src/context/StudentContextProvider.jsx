@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { StudentContext } from './StudentContext';
 import StudentFormContextProvider from './StudentFormContextProvider';
-import axios from 'axios';
+import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
 
 export default function StudentContextProvider({ children }) {
   const navigate = useNavigate();
@@ -33,10 +34,10 @@ export default function StudentContextProvider({ children }) {
       
       // Fetch token verification and user profile in parallel for faster loading
       Promise.all([
-        axios.get('http://localhost:3000/api/auth/verify-token', {
+        axiosInstance.get(API_ENDPOINTS.VERIFY_TOKEN, {
           headers: {Authorization: `Bearer ${token} `},
         }),
-        axios.get('http://localhost:3000/api/auth/user-profile', {
+        axiosInstance.get(API_ENDPOINTS.USER_PROFILE, {
           headers: { Authorization: `Bearer ${token}` },
         })
       ])

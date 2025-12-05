@@ -1,5 +1,7 @@
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
+import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
 
 const ExcelUploadContent = () => {
     const [file, setFile] = useState(null);
@@ -49,7 +51,7 @@ const ExcelUploadContent = () => {
                 throw new Error('No authentication token found');
             }
 
-            const response = await axios.post('http://localhost:3000/api/excel/upload', formData, {
+            const response = await axiosInstance.post(API_ENDPOINTS.EXCEL_UPLOAD, formData, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'multipart/form-data'
@@ -77,7 +79,7 @@ const ExcelUploadContent = () => {
             const token = localStorage.getItem('token');
             if (!token) return;
 
-            const response = await axios.get('http://localhost:3000/api/excel/history', {
+            const response = await axiosInstance.get(API_ENDPOINTS.EXCEL_HISTORY, {
                 headers: { Authorization: `Bearer ${token}` }
             });
 

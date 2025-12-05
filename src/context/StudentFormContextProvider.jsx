@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StudentFormContext } from './StudentFormContext';
-import axios from 'axios';
+import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
 
 
 /**
@@ -72,7 +73,7 @@ export default function StudentFormContextProvider({ children, userEmail: propUs
             
             if (!userEmail && token) {
                 try {
-                    const response = await axios.get('http://localhost:3000/api/auth/verify-token', {
+                    const response = await axiosInstance.get(API_ENDPOINTS.VERIFY_TOKEN, {
                         headers: { Authorization: `Bearer ${token} `},
                     });
                     const email = response.data.email;
@@ -237,7 +238,7 @@ export default function StudentFormContextProvider({ children, userEmail: propUs
             const formData = new FormData();
             formData.append('profilePhoto', file);
             
-            const response = await axios.post('http://localhost:3000/api/auth/student/uploadProfilePhoto', formData, {
+            const response = await axiosInstance.post(API_ENDPOINTS.STUDENT_UPLOAD_PHOTO, formData, {
                 headers: { 
                     Authorization: `Bearer ${token}`,
                     'Content-Type': 'multipart/form-data'
@@ -362,7 +363,7 @@ export default function StudentFormContextProvider({ children, userEmail: propUs
                     scholarshipType: formData.scholarshipType,
                     ugcId: formData.studentId,
                 };
-                const response = await axios.post('http://localhost:3000/api/auth/student/saveStudentProfile', submitData, {
+                const response = await axiosInstance.post(API_ENDPOINTS.STUDENT_SAVE_PROFILE, submitData, {
                     headers: { Authorization: `Bearer ${token} `}
                 });
                 setMessage(response.data.message);

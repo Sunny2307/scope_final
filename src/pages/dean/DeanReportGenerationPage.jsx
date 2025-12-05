@@ -1,11 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import { FiDownload, FiCalendar, FiFileText } from 'react-icons/fi';
-import axios from 'axios';
-import jsPDF from 'jspdf';
+import React, { useState, useEffect } from 'react';import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
+
+import { FiDownload, FiCalendar, FiFileText } from 'react-icons/fi';import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
+
+import axios from 'axios';import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
+
+import jsPDF from 'jspdf';import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
+
 import 'jspdf-autotable';
-import DeanDashboardHeader from '../../components/dean/DeanDashboardHeader';
-import DeanSidebar from '../../components/dean/DeanSidebar';
+import DeanDashboardHeader from '../../components/dean/DeanDashboardHeader';import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
+
+import DeanSidebar from '../../components/dean/DeanSidebar';import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
+
 import DashboardFooter from '../../components/layout/DashboardFooter';
+import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
 
 const DeanReportGenerationPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -25,7 +39,7 @@ const DeanReportGenerationPage = () => {
     setError(null);
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:3000/api/dean/monthly-report', {
+      const response = await axiosInstance.get(API_ENDPOINTS.DEAN_MONTHLY_REPORT, {
         params: {
           year: selectedYear,
           month: selectedMonth,

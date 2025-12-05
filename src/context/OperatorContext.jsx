@@ -1,5 +1,9 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
+
 import axios from 'axios';
+import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
 
 const OperatorContext = createContext();
 
@@ -65,7 +69,7 @@ export const OperatorContextProvider = ({ children }) => {
     const verifyToken = async (token) => {
         try {
             console.log('OperatorContext: Verifying token...');
-            const response = await axios.get('http://localhost:3000/api/auth/verify-token', {
+            const response = await axiosInstance.get(API_ENDPOINTS.VERIFY_TOKEN, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             
@@ -93,7 +97,7 @@ export const OperatorContextProvider = ({ children }) => {
             setLoading(true);
             setError(null);
             
-            const response = await axios.post('http://localhost:3000/api/auth/login', {
+            const response = await axiosInstance.post(API_ENDPOINTS.LOGIN, {
                 email,
                 password
             });

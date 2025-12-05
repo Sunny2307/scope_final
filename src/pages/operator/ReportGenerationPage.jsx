@@ -1,7 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { FiDownload, FiCalendar, FiFileText } from 'react-icons/fi';
-import axios from 'axios';
-import jsPDF from 'jspdf';
+import React, { useState, useEffect } from 'react';import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
+
+import { FiDownload, FiCalendar, FiFileText } from 'react-icons/fi';import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
+
+import axios from 'axios';import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
+
+import jsPDF from 'jspdf';import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
+
 import 'jspdf-autotable';
 
 const ReportGenerationPage = () => {
@@ -21,7 +29,7 @@ const ReportGenerationPage = () => {
     setError(null);
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:3000/api/auth/operator/monthly-report', {
+      const response = await axiosInstance.get(API_ENDPOINTS.OPERATOR_MONTHLY_REPORT, {
         params: {
           year: selectedYear,
           month: selectedMonth,

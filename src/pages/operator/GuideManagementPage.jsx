@@ -1,6 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
+
+import axios from 'axios';import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
+
 import { FiList, FiUserPlus, FiUsers, FiRefreshCw } from 'react-icons/fi';
+import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
 
 const GuideManagementPage = () => {
     const [activeTab, setActiveTab] = useState('guide-list');
@@ -51,7 +57,7 @@ const GuideManagementPage = () => {
         setError('');
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.get('http://localhost:3000/api/auth/operator/all-guides', {
+            const response = await axiosInstance.get(API_ENDPOINTS.OPERATOR_ALL_GUIDES, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setGuides(response.data.guides || []);
@@ -71,7 +77,7 @@ const GuideManagementPage = () => {
 
         try {
             const token = localStorage.getItem('token');
-            await axios.post('http://localhost:3000/api/auth/operator/add-guide', guideForm, {
+            await axiosInstance.post(API_ENDPOINTS.OPERATOR_ADD_GUIDE, guideForm, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setSuccess('Guide added successfully!');
@@ -94,7 +100,7 @@ const GuideManagementPage = () => {
 
         try {
             const token = localStorage.getItem('token');
-            await axios.post('http://localhost:3000/api/auth/operator/add-co-guide', coGuideForm, {
+            await axiosInstance.post(API_ENDPOINTS.OPERATOR_ADD_CO_GUIDE, coGuideForm, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setSuccess('Co-guide added successfully!');
@@ -125,7 +131,7 @@ const GuideManagementPage = () => {
         setSuccess('');
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.post('http://localhost:3000/api/auth/operator/batch-transfer', {
+            const response = await axiosInstance.post(API_ENDPOINTS.OPERATOR_BATCH_TRANSFER, {
                 fromGuideId: transferForm.fromGuideId,
                 toGuideId: transferForm.toGuideId,
             }, {

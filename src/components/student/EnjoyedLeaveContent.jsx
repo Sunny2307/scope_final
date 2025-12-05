@@ -1,7 +1,11 @@
 // src/components/student/EnjoyedLeaveContent.jsx
 
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
+
 import axios from 'axios';
+import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
 
 // --- Helper Icon Components (using inline SVG for simplicity) ---
 
@@ -47,7 +51,7 @@ export default function EnjoyedLeaveContent({ onBack }) {
             try {
                 const token = localStorage.getItem('token');
                 if (!token) return;
-                const { data } = await axios.get('http://localhost:3000/api/auth/student/enjoyed-leaves', {
+                const { data } = await axiosInstance.get(API_ENDPOINTS.STUDENT_ENJOYED_LEAVES, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 setSummaryData(data.summary || []);

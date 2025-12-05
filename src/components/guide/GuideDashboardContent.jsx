@@ -1,7 +1,8 @@
 // src/components/guide/GuideDashboardContent.jsx
 
 import React, { useState, useEffect, useContext } from 'react';
-import axios from 'axios';
+import axiosInstance from '../../utils/axiosInstance';
+import { API_ENDPOINTS, getUploadUrl } from '../../config/api';
 import { GuideContext } from '../../context/GuideContext';
 
 // --- Helper Icon Components ---
@@ -50,7 +51,7 @@ const ApplicationModal = ({ application, onClose }) => {
                 throw new Error('No authentication token found');
             }
 
-            const response = await axios.post('http://localhost:3000/api/auth/guide/leave-action', {
+            const response = await axiosInstance.post(API_ENDPOINTS.GUIDE_LEAVE_ACTION, {
                 leaveId: application.leaveId,
                 action: actionType === 'approve' ? 'APPROVED' : 'REJECTED',
                 reason: reason
@@ -108,7 +109,7 @@ const ApplicationModal = ({ application, onClose }) => {
                         <button 
                             onClick={(e) => {
                                 e.stopPropagation();
-                                const documentUrl = `http://localhost:3000/uploads/${application.documentPath}`;
+                                const documentUrl = getUploadUrl(`uploads/${application.documentPath}`);
                                 window.open(documentUrl, '_blank');
                             }}
                             className="text-sm font-semibold text-blue-600 hover:underline cursor-pointer"
@@ -257,7 +258,7 @@ export default function GuideDashboardContent() {
                     throw new Error('No authentication token found');
                 }
 
-                const response = await axios.get('http://localhost:3000/api/auth/guide/leave-applications', {
+                const response = await axiosInstance.get(API_ENDPOINTS.GUIDE_LEAVE_APPLICATIONS, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
 

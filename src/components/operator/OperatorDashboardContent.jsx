@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
 
 // --- Helper Icon Components ---
 const SearchIcon = () => (
@@ -49,7 +51,7 @@ const LWPApplicationModal = ({ application, onClose }) => {
                 throw new Error('No authentication token found');
             }
 
-            const response = await axios.post('http://localhost:3000/api/auth/operator/leave-action', {
+            const response = await axiosInstance.post(API_ENDPOINTS.OPERATOR_LEAVE_ACTION, {
                 leaveId: application.leaveId,
                 action: actionType === 'approve' ? 'APPROVED' : 'REJECTED',
                 reason: reason
@@ -239,7 +241,7 @@ export default function OperatorDashboardContent() {
             const token = localStorage.getItem('token');
             if (token) {
                 try {
-                    const response = await axios.get('http://localhost:3000/api/auth/verify-token', {
+                    const response = await axiosInstance.get(API_ENDPOINTS.VERIFY_TOKEN, {
                         headers: { Authorization: `Bearer ${token}` }
                     });
                     
@@ -276,7 +278,7 @@ export default function OperatorDashboardContent() {
                 throw new Error('No authentication token found');
             }
 
-            const response = await axios.get('http://localhost:3000/api/auth/operator/lwp-applications', {
+            const response = await axiosInstance.get(API_ENDPOINTS.OPERATOR_LWP_APPLICATIONS, {
                 headers: { Authorization: `Bearer ${token}` },
             });
 

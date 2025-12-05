@@ -1,7 +1,15 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useState, useEffect } from 'react';import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
+
+import { useNavigate } from 'react-router-dom';import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
+
+import axios from 'axios';import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
+
 import { GuideContext } from './GuideContext';
+import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
 
 export default function GuideContextProvider({ children }) {
   const navigate = useNavigate();
@@ -29,7 +37,7 @@ export default function GuideContextProvider({ children }) {
         }
 
         console.log('GuideContextProvider: Verifying token');
-        const response = await axios.get('http://localhost:3000/api/auth/verify-token', {
+        const response = await axiosInstance.get(API_ENDPOINTS.VERIFY_TOKEN, {
           headers: { Authorization: `Bearer ${token}` },
         });
 

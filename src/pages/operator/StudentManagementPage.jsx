@@ -1,7 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { FiUser, FiToggleLeft, FiToggleRight, FiEye } from 'react-icons/fi';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
+
+import { FiUser, FiToggleLeft, FiToggleRight, FiEye } from 'react-icons/fi';import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
+
+import axios from 'axios';import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
+
 import StudentProfileReviewModal from '../../components/operator/StudentProfileReviewModal.jsx';
+import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
 
 const StudentManagementPage = () => {
   const [students, setStudents] = useState([]);
@@ -18,7 +26,7 @@ const StudentManagementPage = () => {
   const fetchAllStudents = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:3000/api/auth/operator/all-students', {
+      const response = await axiosInstance.get(API_ENDPOINTS.OPERATOR_ALL_STUDENTS, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setStudents(response.data.students);
@@ -40,7 +48,7 @@ const StudentManagementPage = () => {
     setProcessing(true);
     try {
       const token = localStorage.getItem('token');
-      await axios.post('http://localhost:3000/api/auth/operator/toggle-student-status', {
+      await axiosInstance.post(API_ENDPOINTS.OPERATOR_TOGGLE_STATUS, {
         studentId: studentId,
         isActive: !currentStatus
       }, {

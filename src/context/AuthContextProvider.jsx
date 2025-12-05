@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
 import { AuthContext } from "./AuthContext";
 
 export default function AuthContextProvider({ children }) {
@@ -152,7 +153,7 @@ export default function AuthContextProvider({ children }) {
       console.log('Validation passed, sending login request');
       setIsLoading(true);
       try {
-        const response = await axios.post('http://localhost:3000/api/auth/login', loginCredentials);
+        const response = await axiosInstance.post(API_ENDPOINTS.LOGIN, loginCredentials);
         console.log('Login response:', response.data);
         if (response.data && response.data.token) {
           console.log('Token received:', response.data.token);
@@ -224,7 +225,7 @@ export default function AuthContextProvider({ children }) {
     if (validateEmailForSignup(signUpCredentials.email) && validateStudentId(signUpCredentials.email)) {
       setIsLoading(true);
       try {
-        const response = await axios.post('http://localhost:3000/api/auth/signup', { 
+        const response = await axiosInstance.post(API_ENDPOINTS.SIGNUP, { 
           email: signUpCredentials.email,
           studentId: studentId
         });
@@ -251,12 +252,12 @@ export default function AuthContextProvider({ children }) {
       setIsLoading(true);
       try {
         const fullOtp = otp.join('');
-        const verifyResponse = await axios.post('http://localhost:3000/api/auth/verify-otp', { email: signUpCredentials.email, otp: fullOtp });
+        const verifyResponse = await axiosInstance.post(API_ENDPOINTS.VERIFY_OTP, { email: signUpCredentials.email, otp: fullOtp });
         console.log('Verify OTP response:', verifyResponse.data);
-        const setPasswordResponse = await axios.post('http://localhost:3000/api/auth/set-password', signUpCredentials);
+        const setPasswordResponse = await axiosInstance.post(API_ENDPOINTS.SET_PASSWORD, signUpCredentials);
         console.log('Set password response:', setPasswordResponse.data);
         setMessage(setPasswordResponse.data.message);
-        const tokenResponse = await axios.post('http://localhost:3000/api/auth/generate-token', { email: signUpCredentials.email });
+        const tokenResponse = await axiosInstance.post(API_ENDPOINTS.GENERATE_TOKEN, { email: signUpCredentials.email });
         console.log('Generate token response:', tokenResponse.data);
         const token = tokenResponse.data.token;
         localStorage.setItem('token', token);
@@ -299,7 +300,7 @@ export default function AuthContextProvider({ children }) {
     if (validateEmailForLogin(forgotPasswordEmail)) {
       setIsLoading(true);
       try {
-        const response = await axios.post('http://localhost:3000/api/auth/forgot-password', { 
+        const response = await axiosInstance.post('api/auth/forgot-password', { 
           email: forgotPasswordEmail
         });
         console.log('Forgot password OTP response:', response.data);
@@ -324,7 +325,7 @@ export default function AuthContextProvider({ children }) {
     
     setIsLoading(true);
     try {
-      const response = await axios.post('http://localhost:3000/api/auth/verify-forgot-password-otp', { 
+      const response = await axiosInstance.post('api/auth/verify-forgot-password-otp', { 
         email: forgotPasswordEmail,
         otp: fullOtp
       });
@@ -357,7 +358,7 @@ export default function AuthContextProvider({ children }) {
       setIsLoading(true);
       try {
         const fullOtp = forgotPasswordOtp.join('');
-        const response = await axios.post('http://localhost:3000/api/auth/reset-password', { 
+        const response = await axiosInstance.post('api/auth/reset-password', { 
           email: forgotPasswordEmail,
           otp: fullOtp,
           password: forgotPasswordCredentials.newPassword

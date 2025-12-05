@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axiosInstance from '../../utils/axiosInstance';
+import { API_ENDPOINTS } from '../../config/api';
 import StudentFormContextProvider from '../../context/StudentFormContextProvider';
 import StudentProfileContent from '../../components/student/form/StudentProfileContent';
 
@@ -29,10 +30,10 @@ export default function StudentProfileForm() {
 
                 // Verify token and get user profile
                 const [verifyResponse, profileResponse] = await Promise.all([
-                    axios.get('http://localhost:3000/api/auth/verify-token', {
+                    axiosInstance.get(API_ENDPOINTS.VERIFY_TOKEN, {
                         headers: { Authorization: `Bearer ${token} `},
                     }),
-                    axios.get('http://localhost:3000/api/auth/user-profile', {
+                    axiosInstance.get(API_ENDPOINTS.USER_PROFILE, {
                         headers: { Authorization: `Bearer ${token}` },
                     }).catch(() => null) // If profile doesn't exist, this will fail
                 ]);

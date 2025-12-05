@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FiX } from 'react-icons/fi';
-import axios from 'axios';
+import axiosInstance from '../../utils/axiosInstance';
+import { API_ENDPOINTS } from '../../config/api';
 import { useNavigate } from 'react-router-dom';
 
 const ResetPasswordModal = ({ isOpen, onClose }) => {
@@ -34,11 +35,9 @@ const ResetPasswordModal = ({ isOpen, onClose }) => {
         setIsLoading(true);
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.post('http://localhost:3000/api/auth/change-password', {
+            const response = await axiosInstance.post(API_ENDPOINTS.CHANGE_PASSWORD, {
                 currentPassword,
                 newPassword
-            }, {
-                headers: { Authorization: `Bearer ${token}` }
             });
 
             setMessage(response.data.message);

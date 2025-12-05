@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Clock, CheckCircle, XCircle } from 'lucide-react';
-import axios from 'axios';
+import axiosInstance from '../../utils/axiosInstance';
+import { API_ENDPOINTS } from '../../config/api';
 
 export default function PendingApprovalPage() {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ export default function PendingApprovalPage() {
           return;
         }
 
-        const response = await axios.get('http://localhost:3000/api/auth/user-profile', {
+        const response = await axiosInstance.get(API_ENDPOINTS.USER_PROFILE, {
           headers: { Authorization: `Bearer ${token}` },
         });
 

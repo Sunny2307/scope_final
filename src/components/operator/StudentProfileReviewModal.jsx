@@ -1,6 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { FiX, FiEdit2, FiSave, FiUser, FiMail, FiPhone, FiMapPin, FiCalendar, FiBookOpen, FiFileText, FiCheck, FiX as FiXIcon } from 'react-icons/fi';
+import React, { useState, useEffect } from 'react';import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
+
+import { FiX, FiEdit2, FiSave, FiUser, FiMail, FiPhone, FiMapPin, FiCalendar, FiBookOpen, FiFileText, FiCheck, FiX as FiXIcon } from 'react-icons/fi';import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
+
 import axios from 'axios';
+import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
 
 const StudentProfileReviewModal = ({ student, onClose, onApprove, onReject, onProfileUpdated }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -17,7 +23,7 @@ const StudentProfileReviewModal = ({ student, onClose, onApprove, onReject, onPr
   useEffect(() => {
     const fetchGuides = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/auth/available-guides');
+        const response = await axiosInstance.get(API_ENDPOINTS.AVAILABLE_GUIDES);
         setGuides(response.data.guides || []);
       } catch (error) {
         console.error('Error fetching guides:', error);
@@ -119,7 +125,7 @@ const StudentProfileReviewModal = ({ student, onClose, onApprove, onReject, onPr
     setIsSaving(true);
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post('http://localhost:3000/api/auth/operator/update-student-profile', {
+      const response = await axiosInstance.post(API_ENDPOINTS.OPERATOR_UPDATE_STUDENT, {
         studentId: student.id,
         profileData: editedData
       }, {
@@ -172,7 +178,7 @@ const StudentProfileReviewModal = ({ student, onClose, onApprove, onReject, onPr
       // If approving, save the updated profile data first
       if (actionType === 'APPROVED') {
         console.log('Updating student profile...');
-        const updateResponse = await axios.post('http://localhost:3000/api/auth/operator/update-student-profile', {
+        const updateResponse = await axiosInstance.post(API_ENDPOINTS.OPERATOR_UPDATE_STUDENT, {
           studentId: student.id,
           profileData: editedData
         }, {
@@ -182,7 +188,7 @@ const StudentProfileReviewModal = ({ student, onClose, onApprove, onReject, onPr
       }
 
       console.log('Processing approval/rejection...');
-      const actionResponse = await axios.post('http://localhost:3000/api/auth/operator/approve-reject-student', {
+      const actionResponse = await axiosInstance.post(API_ENDPOINTS.OPERATOR_APPROVE_REJECT, {
         studentId: student.id,
         action: actionType,
         reason: reason

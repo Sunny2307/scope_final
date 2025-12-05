@@ -1,12 +1,24 @@
-import React, { useState, useRef, forwardRef, useEffect } from 'react';
-import DatePicker from 'react-datepicker';
+import React, { useState, useRef, forwardRef, useEffect } from 'react';import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
+
+import DatePicker from 'react-datepicker';import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
+
 import 'react-datepicker/dist/react-datepicker.css';
 import axios from 'axios';
+import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
 
 // Import layout components (assuming they exist in your project structure)
-import DashboardHeader from '../layout/DashboardHeader';
-import DashboardFooter from '../layout/DashboardFooter';
+import DashboardHeader from '../layout/DashboardHeader';import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
+
+import DashboardFooter from '../layout/DashboardFooter';import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
+
 import Sidebar from '../layout/Sidebar';
+import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
 
 // --- Helper Icon Components ---
 const CalendarIcon = () => (
@@ -96,7 +108,7 @@ const InfoIcon = () => (
                      throw new Error('No authentication token found');
                  }
                  
-                 const response = await axios.get('http://localhost:3000/api/auth/student/leave-summary', {
+                 const response = await axiosInstance.get(API_ENDPOINTS.STUDENT_LEAVE_SUMMARY, {
                      headers: { Authorization: `Bearer ${token}` },
                  });
                  
@@ -179,8 +191,8 @@ const InfoIcon = () => (
 
             console.log('Submitting Leave Request:', { leaveType, startDate, endDate, reason, hasDocument: files.length > 0 });
 
-            const response = await axios.post(
-                'http://localhost:3000/api/auth/student/submitLeaveApplication',
+            const response = await axiosInstance.post(
+                API_ENDPOINTS.STUDENT_SUBMIT_LEAVE,
                 formData,
                 {
                     headers: {

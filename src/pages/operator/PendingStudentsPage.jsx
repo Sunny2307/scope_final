@@ -1,7 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { FiUser, FiMail, FiCalendar, FiCheck, FiX, FiEye } from 'react-icons/fi';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
+
+import { FiUser, FiMail, FiCalendar, FiCheck, FiX, FiEye } from 'react-icons/fi';import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
+
+import axios from 'axios';import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
+
 import StudentProfileReviewModal from '../../components/operator/StudentProfileReviewModal';
+import axiosInstance from '../utils/axiosInstance';
+import { API_ENDPOINTS } from '../config/api';
 
 const PendingStudentsPage = () => {
   const [students, setStudents] = useState([]);
@@ -20,7 +28,7 @@ const PendingStudentsPage = () => {
   const fetchPendingStudents = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:3000/api/auth/operator/pending-students', {
+      const response = await axiosInstance.get(API_ENDPOINTS.OPERATOR_PENDING_STUDENTS, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setStudents(response.data.students);
@@ -37,7 +45,7 @@ const PendingStudentsPage = () => {
     setProcessing(true);
     try {
       const token = localStorage.getItem('token');
-      await axios.post('http://localhost:3000/api/auth/operator/approve-reject-student', {
+      await axiosInstance.post(API_ENDPOINTS.OPERATOR_APPROVE_REJECT, {
         studentId: selectedStudent.id,
         action: action,
         reason: reason
