@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Clock, CheckCircle, XCircle } from 'lucide-react';
+import { Clock, CheckCircle, XCircle, RefreshCw } from 'lucide-react';
 import api from '../../lib/api';
 
 export default function PendingApprovalPage() {
@@ -41,7 +41,16 @@ export default function PendingApprovalPage() {
       }
     };
 
+    // Check immediately on load
     checkApprovalStatus();
+
+    // Set up polling to check approval status every 10 seconds
+    const pollInterval = setInterval(() => {
+      checkApprovalStatus();
+    }, 10000); // Poll every 10 seconds
+
+    // Cleanup interval on unmount
+    return () => clearInterval(pollInterval);
   }, [navigate]);
 
   const handleLogout = () => {
@@ -50,6 +59,34 @@ export default function PendingApprovalPage() {
     localStorage.removeItem('needsProfileCompletion');
     localStorage.removeItem('approvalStatus');
     navigate('/', { replace: true });
+  };
+
+  const handleManualRefresh = async () => {
+    setIsLoading(true);
+    try {
+      let token = new URLSearchParams(window.location.search).get('token');
+      if (!token) {
+        token = localStorage.getItem('token');
+      }
+
+      if (token) {
+        const response = await api.get('/api/auth/user-profile', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        const status = response.data?.approvalStatus || 'PENDING';
+        setApprovalStatus(status);
+
+        if (status === 'APPROVED') {
+          navigate('/student/dashboard', { replace: true });
+          return;
+        }
+      }
+    } catch (error) {
+      console.error('Error checking approval status:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   if (isLoading) {
@@ -84,16 +121,20 @@ export default function PendingApprovalPage() {
         <p className="text-gray-600 mb-6">
           {isRejected 
             ? 'Unfortunately, your profile has been rejected. Please contact the administrator for more information.'
-            : 'Your profile has been submitted successfully. We are currently reviewing your application. You will be notified once an operator approves your profile.'}
+            : 'Your profile has been submitted successfully. We are currently reviewing your application.'}
         </p>
         
-        <div className={`${isRejected ? 'bg-red-50 border-red-200' : 'bg-yellow-50 border-yellow-200'} border rounded-lg p-4 mb-6`}>
-          <p className={`text-sm ${isRejected ? 'text-red-800' : 'text-yellow-800'}`}>
-            <strong>Status:</strong> {isRejected ? 'Rejected' : 'Pending Review'}
-          </p>
-        </div>
-        
         <div className="space-y-3">
+          {!isRejected && (
+            <button
+              onClick={handleManualRefresh}
+              disabled={isLoading}
+              className="w-full px-6 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-colors disabled:bg-green-400 flex items-center justify-center gap-2"
+            >
+              <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
+              {isLoading ? 'Checking...' : 'Check Now'}
+            </button>
+          )}
           <button
             onClick={handleLogout}
             className="w-full px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"

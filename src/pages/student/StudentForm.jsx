@@ -34,28 +34,45 @@ export default function StudentProfileForm() {
                     }),
                     api.get('/api/auth/user-profile', {
                         headers: { Authorization: `Bearer ${token}` },
-                    }).catch(() => null) // If profile doesn't exist, this will fail
+                    }).catch((err) => {
+                        console.log('Profile fetch error status:', err.response?.status);
+                        return null;
+                    })
                 ]);
 
                 const email = verifyResponse.data.email;
                 
-                // If profile exists, redirect based on approval status
-                if (profileResponse && profileResponse.data && profileResponse.data.profile) {
-                    const approvalStatus = profileResponse.data.approvalStatus || 'PENDING';
+                // If profile exists and has been filled out, redirect based on approval status
+                // Check profileRaw from backend to see if actual StudentProfile record exists
+                if (profileResponse && profileResponse.data) {
+                    const profileData = profileResponse.data;
+                    const hasProfile = !!profileData.profileRaw;
+                    const approvalStatus = profileData.approvalStatus || 'PENDING';
                     
-                    if (approvalStatus === 'APPROVED') {
-                        navigate('/student/dashboard', { replace: true });
-                    } else {
-                        navigate('/student/pending-approval', { replace: true });
+                    console.log('Profile check:', { hasProfile, approvalStatus });
+                    
+                    if (hasProfile) {
+                        // Profile exists
+                        if (approvalStatus === 'APPROVED') {
+                            navigate('/student/dashboard', { replace: true });
+                        } else if (approvalStatus === 'REJECTED') {
+                            // If rejected, allow them to resubmit
+                            console.log('Profile was rejected, showing form for resubmission');
+                            setIsChecking(false);
+                        } else {
+                            // PENDING status
+                            navigate('/student/pending-approval', { replace: true });
+                        }
+                        return;
                     }
-                    return;
                 }
 
                 // Profile doesn't exist, allow form to show
+                console.log('No profile found, showing form');
                 setIsChecking(false);
             } catch (error) {
                 // If error getting profile, assume profile doesn't exist yet
-                console.log('Profile check:', error.response?.status === 404 ? 'Profile not found, showing form' : 'Error checking profile');
+                console.log('Profile check:', error.response?.status === 404 ? 'Profile not found, showing form' : 'Error checking profile', error);
                 setIsChecking(false);
             }
         };

@@ -371,7 +371,17 @@ export default function StudentFormContextProvider({ children, userEmail: propUs
                 localStorage.setItem('approvalStatus', 'PENDING');
                 setIsSubmitted(true);
             } catch (error) {
-                setMessage(error.response?.data?.error || 'An error occurred during submission');
+                const errorMsg = error.response?.data?.error || error.response?.data?.message || 'An error occurred during submission';
+                setMessage(errorMsg);
+                
+                // Check if the error is about existing profile
+                if (error.response?.data?.error && error.response.data.error.includes('already exists')) {
+                    // If profile already exists, redirect to pending approval page after 2 seconds
+                    setTimeout(() => {
+                        setIsSubmitted(true); // This will trigger the redirect
+                    }, 2000);
+                }
+                
                 console.error('Submission error:', error.response?.data || error.message); // Enhanced logging
             } finally {
                 setIsSubmitting(false);

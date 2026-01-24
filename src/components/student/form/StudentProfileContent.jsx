@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import { StudentFormContext } from "../../../context/StudentFormContext";
-import { ChevronLeft, ChevronRight, CheckCircle } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 // Import all the step components
@@ -25,19 +25,15 @@ export default function StudentProfileContent() {
     prevStep,
     nextStep,
     handleSubmit,
+    message,
   } = useContext(StudentFormContext);
   
   const navigate = useNavigate();
 
   useEffect(() => {
     if (isSubmitted) {
-      // Show success message for 3 seconds, then redirect to pending approval page
-      const timer = setTimeout(() => {
-        // Redirect to pending approval page since profile is submitted but not approved yet
-        navigate('/student/pending-approval', { replace: true });
-      }, 3000);
-      
-      return () => clearTimeout(timer);
+      // Directly redirect to pending approval page without showing success screen
+      navigate('/student/pending-approval', { replace: true });
     }
   }, [isSubmitted, navigate]);
 
@@ -58,50 +54,44 @@ export default function StudentProfileContent() {
     }
   };
 
-  if (isSubmitted) {
-    return (
-      <div className="w-full max-w-2xl bg-white rounded-2xl shadow-lg p-8 text-center">
-        <CheckCircle className="text-green-500 w-20 h-20 mx-auto mb-6" />
-        <h1 className="text-3xl font-bold text-gray-800 mb-2">
-          Profile Created Successfully!
-        </h1>
-        <p className="text-gray-600 mb-4">
-          Your student profile has been successfully created and submitted for approval.
-        </p>
-        <p className="text-sm text-blue-600">
-          You will be redirected to the login page in a few seconds...
-        </p>
-        <div className="mt-6">
-          <button 
-            onClick={() => {
-              // Clear any stored tokens and redirect to login
-              localStorage.removeItem('token');
-              sessionStorage.removeItem('token');
-              window.location.href = '/';
-            }}
-            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            Go to Login Page
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="w-full max-w-4xl bg-white rounded-2xl shadow-lg p-8 ">
+    <form onSubmit={handleSubmit} className="w-full max-w-4xl bg-white rounded-2xl shadow-lg p-8">
       <h1 className="text-3xl font-bold text-gray-800 text-center mb-2 overflow-y-hidden">
         Create Your Student Profile
       </h1>
       <p className="text-gray-500 text-center mb-8">
         Follow the steps to complete your profile.
       </p>
+      
+      {message && (
+        <div className={`mb-6 p-4 rounded-lg flex justify-between items-center ${
+          message.includes('already exists') 
+            ? 'bg-yellow-100 text-yellow-800 border border-yellow-400' 
+            : message.includes('error') || message.includes('Error') 
+            ? 'bg-red-100 text-red-700 border border-red-400' 
+            : 'bg-green-100 text-green-700 border border-green-400'
+        }`}>
+          <div className="flex-1">
+            {message.includes('already exists') ? (
+              <>
+                <p className="font-semibold mb-2">Profile Already Submitted</p>
+                <p className="text-sm">{message}</p>
+                <p className="text-sm mt-2">You will be redirected to your approval status page...</p>
+              </>
+            ) : (
+              message
+            )}
+          </div>
+        </div>
+      )}
+      
       <StepProgressBar />
       <div className="mt-10">{renderStep()}</div>
       <div className="flex justify-between mt-8">
         {currentStep > 1 && (
           // Changed: Updated the styling of the "Back" button to match the "Next" button
           <button
+            type="button"
             onClick={prevStep}
             className="flex items-center px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
           >
@@ -110,6 +100,7 @@ export default function StudentProfileContent() {
         )}
         {currentStep < 5 && (
           <button
+            type="button"
             onClick={nextStep}
             className="flex items-center ml-auto px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
           >
@@ -119,7 +110,7 @@ export default function StudentProfileContent() {
         {currentStep === 5 && (
           // Note: The submit button is on the right, so it needs ml-auto to stay there when the back button is present.
           <button
-            onClick={handleSubmit}
+            type="submit"
             disabled={isSubmitting}
             className={`flex items-center ${
               currentStep > 1 ? "" : "ml-auto"
@@ -129,6 +120,6 @@ export default function StudentProfileContent() {
           </button>
         )}
       </div>
-    </div>
+    </form>
   );
 }
