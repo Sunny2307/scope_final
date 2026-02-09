@@ -12,6 +12,7 @@ const StudentProfileReviewModal = ({ student, onClose, onApprove, onReject, onPr
   const [validationErrors, setValidationErrors] = useState({});
   const [guides, setGuides] = useState([]);
   const [loadingGuides, setLoadingGuides] = useState(true);
+  const [openDropdown, setOpenDropdown] = useState(null);
 
   // Fetch available guides
   useEffect(() => {
@@ -26,6 +27,15 @@ const StudentProfileReviewModal = ({ student, onClose, onApprove, onReject, onPr
       }
     };
     fetchGuides();
+  }, []);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = () => {
+      setOpenDropdown(null);
+    };
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
   }, []);
 
   useEffect(() => {
@@ -244,18 +254,42 @@ const StudentProfileReviewModal = ({ student, onClose, onApprove, onReject, onPr
     if (shouldShowEditable) {
       if (type === 'select') {
         const currentValue = editedData[fieldName] || '';
+        const isOpen = openDropdown === fieldName;
+        const selectedOption = options.find(opt => String(opt.value) === String(currentValue));
+        
         return (
-          <select
-            value={currentValue}
-            onChange={(e) => handleInputChange(fieldName, e.target.value)}
-            className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white ${
-              hasError ? 'border-red-500' : 'border-gray-300'
-            }`}
-          >
-            {options.map(option => (
-              <option key={option.value} value={option.value}>{option.label}</option>
-            ))}
-          </select>
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => setOpenDropdown(isOpen ? null : fieldName)}
+              className={`w-full px-3 py-2 border rounded-lg text-left flex justify-between items-center bg-white text-gray-900 ${
+                hasError ? 'border-red-500' : 'border-gray-300'
+              } hover:border-gray-400 transition-colors`}
+            >
+              <span>{selectedOption?.label || 'Select an option'}</span>
+              <span className={`transform transition-transform ${isOpen ? 'rotate-180' : ''}`}>▼</span>
+            </button>
+            
+            {isOpen && (
+              <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg z-50 max-h-64 overflow-y-auto">
+                {options.map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={() => {
+                      handleInputChange(fieldName, option.value);
+                      setOpenDropdown(null);
+                    }}
+                    className={`w-full px-3 py-2 text-left hover:bg-gray-100 transition-colors ${
+                      String(currentValue) === String(option.value) ? 'bg-gray-200 font-semibold' : ''
+                    }`}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         );
       } else if (type === 'textarea') {
         return (
@@ -470,7 +504,7 @@ const StudentProfileReviewModal = ({ student, onClose, onApprove, onReject, onPr
                   <div>
                     <label className="block text-sm font-medium text-gray-600">Current Semester</label>
                     {renderField('Current Semester', editedData.currentSemester, 'currentSemester', 'select', 
-                      [1,2,3,4,5,6,7,8].map(sem => ({ value: sem, label: `Semester ${sem}` })), false, true
+                      Array.from({ length: 40 }, (_, i) => i + 1).map(sem => ({ value: sem, label: `Semester ${sem}` })), false, true
                     )}
                   </div>
                   <div>

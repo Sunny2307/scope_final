@@ -1,5 +1,5 @@
-import React from 'react';
-import { CheckCircle } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { CheckCircle, ChevronDown } from 'lucide-react';
 
 // Note: All form control components are in one file for brevity.
 
@@ -20,6 +20,72 @@ export const InputField = ({ label, name, type = 'text', value, onChange, error,
         {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
     </div>
 );
+
+// Custom dropdown that won't break out of bounds
+export const CustomSelectField = ({ label, name, value, onChange, error, required, disabled = false, options = [] }) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const containerRef = useRef(null);
+    
+    const selectedOption = options.find(opt => String(opt.value) === String(value));
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (containerRef.current && !containerRef.current.contains(event.target)) {
+                setIsOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    return (
+        <div ref={containerRef}>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+                {label} {required && <span className="text-red-500">*</span>}
+            </label>
+            <div className="relative">
+                <button
+                    type="button"
+                    onClick={() => !disabled && setIsOpen(!isOpen)}
+                    disabled={disabled}
+                    className={`w-full px-4 py-2 border rounded-lg flex justify-between items-center transition-colors text-gray-900 ${
+                        error ? 'border-red-500' : 'border-gray-300'
+                    } ${disabled ? 'bg-gray-100 cursor-not-allowed' : 'bg-white hover:border-gray-400'}`}
+                >
+                    <span>{selectedOption?.label || 'Select an option'}</span>
+                    <ChevronDown className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+                </button>
+
+                {isOpen && (
+                    <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg z-50 max-h-64 overflow-y-auto">
+                        {options.map((option) => (
+                            <button
+                                key={option.value}
+                                type="button"
+                                onClick={() => {
+                                    onChange({
+                                        target: {
+                                            name: name,
+                                            value: option.value
+                                        }
+                                    });
+                                    setIsOpen(false);
+                                }}
+                                className={`w-full px-4 py-3 text-left text-gray-900 hover:bg-blue-50 transition-colors border-b border-gray-100 last:border-b-0 ${
+                                    String(value) === String(option.value) ? 'bg-blue-100 font-semibold text-gray-900' : ''
+                                }`}
+                            >
+                                {option.label}
+                            </button>
+                        ))}
+                    </div>
+                )}
+            </div>
+            {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
+        </div>
+    );
+};
 
 export const SelectField = ({ label, name, value, onChange, error, required, disabled = false, children }) => (
     <div>

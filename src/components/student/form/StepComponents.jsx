@@ -4,7 +4,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import api from '../../../lib/api';
 import { StudentFormContext } from '../../../context/StudentFormContext';
 import { User, Home, BookOpen, FileText, CheckCircle, UploadCloud, Calendar } from 'lucide-react';
-import { InputField, SelectField, TextareaField, RadioInput, CheckboxInput } from './FormControls';
+import { InputField, SelectField, CustomSelectField, TextareaField, RadioInput, CheckboxInput } from './FormControls';
 
 export const StepProgressBar = () => {
     const { currentStep } = useContext(StudentFormContext);
@@ -185,10 +185,21 @@ export const PersonalDetails = () => {
                         <option key={year} value={year}>{year}</option>
                     ))}
                 </SelectField>
-                <SelectField label="Current Semester" name="currentSemester" value={formData.currentSemester} onChange={handleChange} error={errors.currentSemester} required>
-                    <option value="">Select Semester</option>
-                    {[1, 2, 3, 4, 5, 6, 7, 8].map(sem => <option key={sem} value={sem}>Semester {sem}</option>)}
-                </SelectField>
+                <CustomSelectField 
+                    label="Current Semester" 
+                    name="currentSemester" 
+                    value={formData.currentSemester} 
+                    onChange={handleChange} 
+                    error={errors.currentSemester} 
+                    required
+                    options={[
+                        { value: '', label: 'Select Semester' },
+                        ...Array.from({ length: 40 }, (_, i) => i + 1).map(sem => ({ 
+                            value: sem, 
+                            label: `Semester ${sem}` 
+                        }))
+                    ]}
+                />
                 <div className="md:col-span-2">
                     <label className="block text-sm font-medium text-gray-700 mb-2">Gender <span className="text-red-500">*</span></label>
                     <div className="flex gap-4">
