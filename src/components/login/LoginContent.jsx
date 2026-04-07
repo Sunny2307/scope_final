@@ -53,7 +53,7 @@ export default function LoginContent() {
                                 id="email"
                                 name="email"
                                 type="text"
-                                placeholder="Enter your charusat email, admin, or operator"
+                                placeholder="Enter your email"
                                 value={loginCredentials.email}
                                 onChange={handleChange}
                                 onBlur={() => setTouched(prev => ({...prev, email: true }))}

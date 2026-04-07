@@ -28,9 +28,11 @@ export default function PendingApprovalPage() {
 
         const status = response.data?.approvalStatus || 'PENDING';
         setApprovalStatus(status);
+        localStorage.setItem('approvalStatus', status);
 
         // If approved, redirect to dashboard
         if (status === 'APPROVED') {
+          localStorage.setItem('needsProfileCompletion', 'false');
           navigate('/student/dashboard', { replace: true });
           return;
         }
@@ -76,8 +78,10 @@ export default function PendingApprovalPage() {
 
         const status = response.data?.approvalStatus || 'PENDING';
         setApprovalStatus(status);
+        localStorage.setItem('approvalStatus', status);
 
         if (status === 'APPROVED') {
+          localStorage.setItem('needsProfileCompletion', 'false');
           navigate('/student/dashboard', { replace: true });
           return;
         }

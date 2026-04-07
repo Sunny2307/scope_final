@@ -1,7 +1,7 @@
 // src/components/layout/Sidebar.jsx
 
 import React from 'react';
-import { FiHome, FiUser, FiBookOpen, FiAward, FiMenu, FiCalendar } from 'react-icons/fi';
+import { FiHome, FiUser, FiBookOpen, FiMenu, FiCalendar } from 'react-icons/fi';
 import { Link } from 'react-router-dom'; // Changed from <a> to <Link> for navigation
 
 // The component now accepts an `activeItem` prop to determine the active link
@@ -12,7 +12,6 @@ const Sidebar = ({ isSidebarOpen, onSidebarToggle, activeItem }) => {
         { name: 'Profile', icon: FiUser, path: '/student/profile' },
         { name: 'Enjoyed Leave', icon: FiBookOpen, path: '/student/enjoyed-leave' },
         { name: 'Auto Generated Leaves', icon: FiCalendar, path: '/student/auto-generated-leaves' },
-        { name: 'Scholarship', icon: FiAward, path: '/scholarship' },
     ];
     // The hardcoded activeItem has been removed, it's now a prop.
 

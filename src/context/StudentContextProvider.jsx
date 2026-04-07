@@ -34,7 +34,7 @@ export default function StudentContextProvider({ children }) {
       // Fetch token verification and user profile in parallel for faster loading
       Promise.all([
         api.get('/api/auth/verify-token', {
-          headers: {Authorization: `Bearer ${token} `},
+          headers: {Authorization: `Bearer ${token}`},
         }),
         api.get('/api/auth/user-profile', {
           headers: { Authorization: `Bearer ${token}` },

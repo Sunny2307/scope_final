@@ -170,20 +170,28 @@ export default function EnjoyedLeaveContent({ onBack }) {
                             </tr>
                         </thead>
                         <tbody>
-                            {filteredApplications.map((app) => (
-                                <tr key={app.id} className="bg-white border-b hover:bg-gray-50">
-                                    <td className="px-6 py-4 font-semibold">{app.type}</td>
-                                    <td className="px-6 py-4">{app.duration}</td>
-                                    <td className="px-6 py-4">{app.days}</td>
-                                    <td className="px-6 py-4">{app.reason}</td>
-                                    <td className="px-6 py-4">
-                                        <span className={`px-3 py-1 text-xs font-semibold rounded-full ${getStatusChipClass(app.status)}`}>
-                                            {app.status}
-                                        </span>
+                            {filteredApplications.length > 0 ? (
+                                filteredApplications.map((app) => (
+                                    <tr key={app.id} className="bg-white border-b hover:bg-gray-50">
+                                        <td className="px-6 py-4 font-semibold">{app.type}</td>
+                                        <td className="px-6 py-4">{app.duration}</td>
+                                        <td className="px-6 py-4">{app.days}</td>
+                                        <td className="px-6 py-4">{app.reason}</td>
+                                        <td className="px-6 py-4">
+                                            <span className={`px-3 py-1 text-xs font-semibold rounded-full ${getStatusChipClass(app.status)}`}>
+                                                {app.status}
+                                            </span>
+                                        </td>
+                                        <td className="px-6 py-4">{app.appliedDate}</td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan="6" className="px-6 py-8 text-center text-gray-500">
+                                        No leave applications found matching your criteria.
                                     </td>
-                                    <td className="px-6 py-4">{app.appliedDate}</td>
                                 </tr>
-                            ))}
+                            )}
                         </tbody>
                     </table>
                 </div>

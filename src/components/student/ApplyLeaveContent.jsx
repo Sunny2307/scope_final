@@ -73,6 +73,7 @@ const InfoIcon = () => (
          'LWP Used': '0'
      });
      const [loadingLeaveBalance, setLoadingLeaveBalance] = useState(true);
+     const [formError, setFormError] = useState('');
 
     const leaveTypes = [
         { key: 'CL', name: 'CL' },
@@ -144,7 +145,7 @@ const InfoIcon = () => (
 
             // Validate DL leave has document
             if (leaveType === 'DL' && files.length === 0) {
-                alert('Please upload a document for DL leave application');
+                setFormError('Please upload a document for DL leave application');
                 setIsSubmitting(false);
                 return;
             }
@@ -153,12 +154,12 @@ const InfoIcon = () => (
             if (leaveType === 'DL' && files.length > 0) {
                 for (let file of files) {
                     if (file.type !== 'application/pdf') {
-                        alert('Only PDF files are allowed');
+                        setFormError('Only PDF files are allowed');
                         setIsSubmitting(false);
                         return;
                     }
                     if (file.size > 5 * 1024 * 1024) {
-                        alert('File size must be less than 5MB');
+                        setFormError('File size must be less than 5MB');
                         setIsSubmitting(false);
                         return;
                     }
@@ -211,7 +212,7 @@ const InfoIcon = () => (
             
             // Show error message
             const errorMessage = error.response?.data?.error || error.message || 'Failed to submit leave application';
-            alert(`Error: ${errorMessage}`);
+            setFormError(`Error: ${errorMessage}`);
         } finally {
             setIsSubmitting(false);
         }
@@ -279,6 +280,7 @@ const InfoIcon = () => (
                     <Sidebar
                         isSidebarOpen={isSidebarOpen}
                         onSidebarToggle={() => setIsSidebarOpen(!isSidebarOpen)}
+                        activeItem="Home"
                     />
                                          <main className="flex-1 p-4 md:p-6 bg-gray-50 flex flex-col min-h-0">
                          <div className="h-full flex flex-col min-h-[600px]">
@@ -316,14 +318,13 @@ const InfoIcon = () => (
                                             <label htmlFor="start-date" className="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
                                             <DatePicker
                                                 selected={startDate}
-                                                onChange={(date) => setStartDate(date)}
+                                                onChange={(date) => { setStartDate(date); setFormError(''); }}
                                                 selectsStart
                                                 startDate={startDate}
                                                 endDate={endDate}
                                                 dateFormat="dd/MM/yyyy"
                                                 required
                                                 placeholderText="DD/MM/YYYY"
-                                                maxDate={new Date()}
                                                 customInput={<CustomDateInput />}
                                             />
                                         </div>
@@ -331,7 +332,7 @@ const InfoIcon = () => (
                                             <label htmlFor="end-date" className="block text-sm font-medium text-gray-700 mb-1">End Date</label>
                                             <DatePicker
                                                 selected={endDate}
-                                                onChange={(date) => setEndDate(date)}
+                                                onChange={(date) => { setEndDate(date); setFormError(''); }}
                                                 selectsEnd
                                                 startDate={startDate}
                                                 endDate={endDate}
@@ -339,7 +340,6 @@ const InfoIcon = () => (
                                                 dateFormat="dd/MM/yyyy"
                                                 required
                                                 placeholderText="DD/MM/YYYY"
-                                                maxDate={new Date()}
                                                 customInput={<CustomDateInput />}
                                             />
                                         </div>
@@ -370,6 +370,12 @@ const InfoIcon = () => (
                                                     {files.map(file => <p key={file.name}>{file.name}</p>)}
                                                 </div>
                                             )}
+                                        </div>
+                                    )}
+
+                                    {formError && (
+                                        <div className="text-sm font-semibold text-red-600 bg-red-50 border border-red-200 rounded p-3 mt-4">
+                                            {formError}
                                         </div>
                                     )}
 

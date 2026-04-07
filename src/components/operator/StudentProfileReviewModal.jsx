@@ -280,7 +280,7 @@ const StudentProfileReviewModal = ({ student, onClose, onApprove, onReject, onPr
                       handleInputChange(fieldName, option.value);
                       setOpenDropdown(null);
                     }}
-                    className={`w-full px-3 py-2 text-left hover:bg-gray-100 transition-colors ${String(currentValue) === String(option.value) ? 'bg-gray-200 font-semibold' : ''
+                    className={`w-full px-3 py-2 text-left text-gray-900 hover:bg-gray-100 transition-colors ${String(currentValue) === String(option.value) ? 'bg-gray-200 font-semibold' : ''
                       }`}
                   >
                     {option.label}
