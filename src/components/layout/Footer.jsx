@@ -26,7 +26,7 @@ export default function Footer() {
                 {/* Action Links */}
                 <span className="hidden sm:inline font-light text-gray-400">|</span>
                 <Link
-                    // to="/developers"
+                    to="/developers"
                     className="font-semibold text-teal-300 hover:text-white hover:underline transition-colors duration-300"
                 >
                     <PiInfo className="inline-block text-lg -mt-1" />

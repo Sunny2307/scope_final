@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import api from '../lib/api';
 
 const DeanContext = createContext();
 
@@ -27,12 +28,12 @@ export const DeanContextProvider = ({ children }) => {
         setError(null);
         
         try {
-            // TODO: Replace with actual API call
-            const response = await fetch('/api/dean/students');
-            if (!response.ok) {
+            // Replaced plain fetch with axios api instance
+            const response = await api.get('/api/dean/students');
+            if (response.status !== 200) {
                 throw new Error('Failed to fetch students data');
             }
-            const data = await response.json();
+            const data = response.data;
             setStudents(data);
         } catch (err) {
             setError(err.message);
